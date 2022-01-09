@@ -95,9 +95,25 @@ public class Person {
         }
     }
 
-    public void dayiTeyze(Relation relation, int relationID, int personID){
+    public void dayiTeyze(Relation relation, int relationID, int personID, int childrenID){
         try {
+            if (relation.relations.get(relationID).children.get(childrenID).gender){
+                System.out.println("Dayı: "+relation.relations.get(relationID).children.get(childrenID).name);
+            }else {
+                System.out.println("Teyze: "+relation.relations.get(relationID).children.get(childrenID).name);
+            }
+        }catch (NullPointerException e){
+            e.getMessage();
+        }
+    }
 
+    public void es(Relation relation, int relationID){
+        try {
+            if (relation.relations.get(relationID).spouse1.gender)
+            System.out.println("Es/ Kocam: "+relation.relations.get(relationID).spouse2.name);
+            else {
+                System.out.println("Es/ Karıcığım: "+relation.relations.get(relationID).spouse1.name);
+            }
         }catch (NullPointerException e){
             e.getMessage();
         }

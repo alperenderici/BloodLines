@@ -8,24 +8,28 @@ public class Main {
         System.out.println("Kişi ekleme hoş geldiniz.");
         person.personAdder();//ilk kisi eklendi
 
-        person.personAdder();//babam
-        person.personAdder();//annem
-        relation.relationAdder(person.persons.get(1),person.persons.get(2));
-        person.childrenAdder(relation,0,0);
+        person.personAdder();//kayinpeder
+        person.personAdder();//kayinvalide
 
-        person.personAdder();//dedem
-        person.personAdder();//babannem
-        relation.relationAdder(person.persons.get(3),person.persons.get(4));
-        person.childrenAdder(relation,1,1);
+        person.personAdder();//es
+        person.personAdder();//cocuk
 
-        person.personAdder();//amca
-        person.childrenAdder(relation,1,5);
-        person.personAdder();//hala
-        person.childrenAdder(relation,1,6);
+        person.personAdder();//dayim
+        person.personAdder();//teyze
 
-        person.persons.get(0).viewPersonInfo();
-        person.amcaHala(relation,1,5,1);
-        person.amcaHala(relation,1,5,2);
+        relation.relationAdder(person.persons.get(1),person.persons.get(2));//kayinpeder-kayinvalide
+        relation.relationAdder(person.persons.get(0),person.persons.get(3));//esim
+
+        person.childrenAdder(relation,0,3);//esim kayinpeder-kayinvalide relationa eklendi
+        person.childrenAdder(relation,0,5);//dayi kayinpeder-kayinvalide relationa eklendi
+        person.childrenAdder(relation,0,6);//teyze kayinpeder-kayinvalide relationa eklendi
+        person.childrenAdder(relation,1,4);//cocuk bizim relationa eklendi
+
+        person.persons.get(4).viewPersonInfo();//cocuk info bastir
+        person.es(relation,1);//es info
+        person.dayiTeyze(relation,0,5,1);//dayi
+        person.dayiTeyze(relation,0,6,2);//teyze
+
 
     }
 }
