@@ -51,7 +51,7 @@ public class UI implements ActionListener {
         thirdPanel = new JPanel();
         thirdPanel.setBorder(border);
         thirdPanel.setBounds(1100, 400, 430, 400);
-        thirdPanel.setLayout(null);
+        thirdPanel.setLayout(new BoxLayout(thirdPanel, BoxLayout.PAGE_AXIS));
 
         labelsPanel = new JPanel();
         labelsPanel.setLayout(new BoxLayout(labelsPanel, BoxLayout.PAGE_AXIS));
@@ -84,6 +84,12 @@ public class UI implements ActionListener {
         comboBoxCinsiyet = new JComboBox(cinsiyet);
         comboBoxCinsiyet.setMaximumSize(new Dimension(Integer.MAX_VALUE, textFieldDogumTarihi.getMinimumSize().height));
         comboBoxCinsiyet.addActionListener(this);
+
+        labelAkraba = new JLabel("Akraba Ekle");
+
+        comboBoxAkraba = new JComboBox(akraba);
+        comboBoxAkraba.setMaximumSize(new Dimension(Integer.MAX_VALUE, textFieldDogumTarihi.getMinimumSize().height));
+        comboBoxAkraba.addActionListener(this);
 
         buttonEkle = new JButton("Ekle");
         buttonEkle.setBounds(secondPanel.getX() + 50, secondPanel.getY() + 50, 30, 10);
@@ -123,6 +129,9 @@ public class UI implements ActionListener {
         secondControlPanel.add(textfieldsPanel);
         secondPanel.add(secondControlPanel);
         secondPanel.add(buttonEkle);
+
+        thirdPanel.add(labelAkraba);
+        thirdPanel.add(comboBoxAkraba);
 
         frame.add(firstPanel);
         frame.add(secondPanel);
