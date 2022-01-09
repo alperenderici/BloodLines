@@ -132,6 +132,14 @@ public class Person {
         }
     }
 
+    public void torun(Relation relation, int relationID, int personID){
+        try {
+            System.out.println("Torun: "+relation.relations.get(relationID).children.get(personID).name);//havada kalmis gibi
+        }catch (NullPointerException e){
+            e.getMessage();
+        }
+    }
+
     public void showPersons(Person person){
         for (int i=0; i<person.persons.size();i++){
             person.viewPersonInfo();
