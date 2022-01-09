@@ -57,7 +57,7 @@ public class Person {
 
     public void brotherAdder(Relation relation, int relationID, int personID,int secondID){//TODO BURADA SIKINTI VAR!!!!!!!
         try {
-            relation.brother.add(relation.relations.get(relationID).children.get(personID));//TODO BURADA SIKINTI VAR!!!!!!!
+            relation.brother.add(relation.relations.get(relationID).children.get(personID));
             relation.brother.add(relation.relations.get(relationID).children.get(secondID));
             System.out.println("Kardeş: "+relation.brother.get(personID).name);
         }catch (NullPointerException e){
@@ -146,7 +146,7 @@ public class Person {
 
     public void kuzen(Relation relation, int relationID,int personId, int childrenID){
         try {
-            if (!persons.get(personId).brother.isEmpty() && !relation.relations.get(relationID).children.isEmpty()){
+            if (!persons.get(personId).brother.isEmpty() && !relation.relations.get(relationID).children.isEmpty()){//TODO BURADA SIKINTI VAR!!!!!!!
                 System.out.println("Kuzen: "+relation.relations.get(relationID).children.get(childrenID).name);
             }else
             {
@@ -158,7 +158,7 @@ public class Person {
         }
     }
 
-    public void torun(Relation relation, int relationID, int personID){
+    public void torun(Relation relation, int relationID, int personID){//TODO BURADA SIKINTI VAR!!!!!!!
         try {
             System.out.println("Torun: "+relation.relations.get(relationID).children.get(personID).name);//havada kalmis gibi
         }catch (NullPointerException e){
