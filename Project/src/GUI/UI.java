@@ -5,6 +5,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,7 +23,6 @@ public class UI implements ActionListener {
     Border margin = new EmptyBorder(10, 10, 10, 10);//
     JButton buttonEkle;
     JButton buttonTemizle;
-    JButton buttonOlustur;
     JLabel labelAd;
     JLabel labelSoyAd;
     JLabel labelDogumTarihi;
@@ -34,13 +34,14 @@ public class UI implements ActionListener {
     JComboBox comboBoxCinsiyet;
     String[] cinsiyet = { "Kadın", "Erkek" };
     JComboBox comboBoxAkraba;
-    String[] akraba = { "Anne", "Baba", "Kardeş", "Eş", "Çocuk" };
+    String[] akraba = { "Ben", "Anne", "Baba", "Kardeş", "Eş", "Çocuk" };
 
     JTree jTree;
     DefaultMutableTreeNode root;
     DefaultMutableTreeNode parents;
     DefaultMutableTreeNode spouse;
     DefaultMutableTreeNode children;
+    DefaultMutableTreeNode broSis;
 
     UI() {
         firstPanel = new JPanel();
@@ -92,7 +93,8 @@ public class UI implements ActionListener {
         textFieldSoyad.setMaximumSize(new Dimension(Integer.MAX_VALUE, textFieldSoyad.getMinimumSize().height));
 
         textFieldDogumTarihi = new JTextField();
-        textFieldDogumTarihi.setMaximumSize(new Dimension(Integer.MAX_VALUE, textFieldDogumTarihi.getMinimumSize().height));
+        textFieldDogumTarihi
+                .setMaximumSize(new Dimension(Integer.MAX_VALUE, textFieldDogumTarihi.getMinimumSize().height));
 
         comboBoxCinsiyet = new JComboBox(cinsiyet);
         comboBoxCinsiyet.setMaximumSize(new Dimension(Integer.MAX_VALUE, textFieldDogumTarihi.getMinimumSize().height));
@@ -112,23 +114,21 @@ public class UI implements ActionListener {
         buttonTemizle.setBounds(930, 690, 80, 30);
         buttonTemizle.addActionListener(this);
 
-        buttonOlustur = new JButton("Soy Ağacını Oluştur");
-        buttonOlustur.setBounds(770, 690, 150, 30);
-        buttonOlustur.addActionListener(this);
-
         root = new DefaultMutableTreeNode("Root");
         jTree = new JTree(root);
-        jTree.setBounds(50,50,1000,600);
+        jTree.setBounds(50, 50, 1000, 600);
 
-        parents = new DefaultMutableTreeNode("Parents");
-        spouse = new DefaultMutableTreeNode("Spouse");
-        children = new DefaultMutableTreeNode("Children");
+        parents = new DefaultMutableTreeNode("Ebeveynler");
+        spouse = new DefaultMutableTreeNode("Eşler");
+        children = new DefaultMutableTreeNode("Çocuklar");
+        broSis = new DefaultMutableTreeNode("Kardeşler");
 
         root.add(parents);
         root.add(spouse);
+        root.add(broSis);
         root.add(children);
 
-        frame = new JFrame();
+        frame = new JFrame("BloodLines");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -155,7 +155,6 @@ public class UI implements ActionListener {
         labelsPanel.add(Box.createRigidArea(new Dimension(0, 18)));
 
         firstPanel.add(buttonTemizle);
-        firstPanel.add(buttonOlustur);
         firstPanel.add(jTree);
 
         secondControlPanel.add(labelsPanel);
@@ -178,19 +177,84 @@ public class UI implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 0)){
-//            JLabel tempLabel = new JLabel(textFieldAd.getText() + " " + textFieldSoyad.getText());
-//            tempLabel.setBorder(new CompoundBorder(border, margin));
-//            tempLabel.setBounds(0,0,80,30);
-//
-//            firstControlPanel.add(tempLabel);
-//            firstControlPanel.add(Box.createRigidArea(new Dimension(0,15)));
-//            firstPanel.add(firstControlPanel);
 
-            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Annesi)");
+        if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 0)) {
+            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(
+                    textFieldAd.getText() + " " + textFieldSoyad.getText());
+            // root = new DefaultMutableTreeNode(tempNode);
+
+            // Changing the text of the root value
+            DefaultTreeModel model = (DefaultTreeModel) jTree.getModel();
+            root = (DefaultMutableTreeNode) model.getRoot();
+            root.setUserObject(textFieldAd.getText() + " " + textFieldSoyad.getText() + "(Kendisi)");
+            model.nodeChanged(root);
+
+            SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
+
+            System.out.println(textFieldAd.getText());
+            System.out.println(textFieldSoyad.getText());
+            System.out.println(textFieldDogumTarihi.getText());
+
+        }
+
+        if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 1)) {
+            // JLabel tempLabel = new JLabel(textFieldAd.getText() + " " +
+            // textFieldSoyad.getText());
+            // tempLabel.setBorder(new CompoundBorder(border, margin));
+            // tempLabel.setBounds(0,0,80,30);
+            //
+            // firstControlPanel.add(tempLabel);
+            // firstControlPanel.add(Box.createRigidArea(new Dimension(0,15)));
+            // firstPanel.add(firstControlPanel);
+
+            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(
+                    textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Annesi)");
             parents.add(tempNode);
-            SwingUtilities.updateComponentTreeUI(firstPanel); //reload the firstPanel after every person add
+            SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
 
+            System.out.println(textFieldAd.getText());
+            System.out.println(textFieldSoyad.getText());
+            System.out.println(textFieldDogumTarihi.getText());
+        }
+
+        if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 2)) {
+            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(
+                    textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Babası)");
+            parents.add(tempNode);
+            SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
+
+            System.out.println(textFieldAd.getText());
+            System.out.println(textFieldSoyad.getText());
+            System.out.println(textFieldDogumTarihi.getText());
+        }
+
+        if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 3)) {
+            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(
+                    textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Kardeşi)");
+            broSis.add(tempNode);
+            SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
+
+            System.out.println(textFieldAd.getText());
+            System.out.println(textFieldSoyad.getText());
+            System.out.println(textFieldDogumTarihi.getText());
+        }
+
+        if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 4)) {
+            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(
+                    textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Eşi)");
+            spouse.add(tempNode);
+            SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
+
+            System.out.println(textFieldAd.getText());
+            System.out.println(textFieldSoyad.getText());
+            System.out.println(textFieldDogumTarihi.getText());
+        }
+
+        if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 5)) {
+            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(
+                    textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Çocuğu)");
+            children.add(tempNode);
+            SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
 
             System.out.println(textFieldAd.getText());
             System.out.println(textFieldSoyad.getText());
@@ -201,17 +265,10 @@ public class UI implements ActionListener {
             System.out.println(comboBoxCinsiyet.getSelectedIndex());
         }
 
-//        if (e.getSource() == comboBoxAkraba) {
-//            System.out.println(comboBoxAkraba.getSelectedIndex());
-//        }
-
         if (e.getSource() == buttonTemizle) {
             firstControlPanel.removeAll();
             SwingUtilities.updateComponentTreeUI(firstControlPanel);
         }
 
-        if (e.getSource() == buttonOlustur) {
-
-        }
     }
 }
