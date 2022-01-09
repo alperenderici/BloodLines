@@ -8,22 +8,34 @@ public class Main {
         System.out.println("Kişi ekleme hoş geldiniz.");
         person.personAdder();//ilk kisi eklendi
 
-        person.personAdder();//es
-        person.personAdder();//baba
-        person.personAdder();//annem
+        person.personAdder();//es kisi eklendi id=1
 
-        person.personAdder();//cocuk
+        person.personAdder();//babam kisi eklendi id=2
+        person.personAdder();//annem kisi eklendi id=3
 
-        relation.relationAdder(person.persons.get(0),person.persons.get(1));
-        relation.relationAdder(person.persons.get(2),person.persons.get(3));
+        person.personAdder();//cocuk kisi eklendi id=4
 
-        person.childrenAdder(relation,0,4);//cocuk id
-        person.childrenAdder(relation,1,0);//bizim baba cocuk
+        person.personAdder();//yenge kisi eklendi id=5
+        person.personAdder();//kardes kisi eklendi id=6
+        person.personAdder();//kuzen kisi eklendi id=7
 
-        person.persons.get(4).grandParents();
-        person.torun(relation,0,0);
-        person.persons.get(2).viewPersonInfo();//dedeinfo
-        person.persons.get(4).viewPersonInfo();//cocuk info
+        relation.relationAdder(person.persons.get(0),person.persons.get(1));//biz esim
+        relation.relationAdder(person.persons.get(2),person.persons.get(3));//anne baba rel
+
+        relation.relationAdder(person.persons.get(6),person.persons.get(5));//yenge kardes rel
+
+        person.childrenAdder(relation,0,4);//cocuk bizim
+        person.childrenAdder(relation,1,0);//biz anne-baba eklend
+        person.childrenAdder(relation,1,6);//amca eklend
+        person.childrenAdder(relation,2,7);//kuzen amca yenge eklend
+
+        person.brotherAdder(relation,1,0,6);
+
+
+        person.kuzen(relation,2,2,7);
+
+
+
 
 
     }

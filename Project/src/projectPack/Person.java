@@ -11,6 +11,7 @@ public class Person {
     String surname;
     String birthday;
     Boolean gender;
+    ArrayList<Person> brother;
 
     ArrayList<Person> persons = new ArrayList<Person>();
 
@@ -53,6 +54,17 @@ public class Person {
         persons.get(personID).parents = relation.relations.get(relationID);
 
     }
+
+    public void brotherAdder(Relation relation, int relationID, int personID,int secondID){//TODO BURADA SIKINTI VAR!!!!!!!
+        try {
+            relation.brother.add(relation.relations.get(relationID).children.get(personID));//TODO BURADA SIKINTI VAR!!!!!!!
+            relation.brother.add(relation.relations.get(relationID).children.get(secondID));
+            System.out.println("Kardeş: "+relation.brother.get(personID).name);
+        }catch (NullPointerException e){
+            e.getMessage();
+        }
+    }
+
     public void motherFather(){
         try {
         if (parents.spouse1.gender){
@@ -127,6 +139,20 @@ public class Person {
         else System.out.println("Dede adı: "+parents.spouse1.parents.spouse2.name+"\nBabaanne adı: "+parents.spouse1.parents.spouse1.name);
         if (parents.spouse2.parents.spouse1.gender) System.out.println("Dede adı: "+parents.spouse2.parents.spouse1.name+"\nAnneanne adı: "+parents.spouse2.parents.spouse2.name);
         else System.out.println("Dede adı: "+parents.spouse2.parents.spouse2.name+"\nAnneanne adı: "+parents.spouse2.parents.spouse1.name);
+        }catch (NullPointerException e){
+            e.getMessage();
+        }
+    }
+
+    public void kuzen(Relation relation, int relationID,int personId, int childrenID){
+        try {
+            if (!persons.get(personId).brother.isEmpty() && !relation.relations.get(relationID).children.isEmpty()){
+                System.out.println("Kuzen: "+relation.relations.get(relationID).children.get(childrenID).name);
+            }else
+            {
+                System.out.println("Kuzen yok!");
+            }
+
         }catch (NullPointerException e){
             e.getMessage();
         }
