@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,6 +35,12 @@ public class UI implements ActionListener {
     String[] cinsiyet = { "Kadın", "Erkek" };
     JComboBox comboBoxAkraba;
     String[] akraba = { "Anne", "Baba", "Kardeş", "Eş", "Çocuk" };
+
+    JTree jTree;
+    DefaultMutableTreeNode root;
+    DefaultMutableTreeNode parents;
+    DefaultMutableTreeNode spouse;
+    DefaultMutableTreeNode children;
 
     UI() {
         firstPanel = new JPanel();
@@ -85,8 +92,7 @@ public class UI implements ActionListener {
         textFieldSoyad.setMaximumSize(new Dimension(Integer.MAX_VALUE, textFieldSoyad.getMinimumSize().height));
 
         textFieldDogumTarihi = new JTextField();
-        textFieldDogumTarihi
-                .setMaximumSize(new Dimension(Integer.MAX_VALUE, textFieldDogumTarihi.getMinimumSize().height));
+        textFieldDogumTarihi.setMaximumSize(new Dimension(Integer.MAX_VALUE, textFieldDogumTarihi.getMinimumSize().height));
 
         comboBoxCinsiyet = new JComboBox(cinsiyet);
         comboBoxCinsiyet.setMaximumSize(new Dimension(Integer.MAX_VALUE, textFieldDogumTarihi.getMinimumSize().height));
@@ -109,6 +115,18 @@ public class UI implements ActionListener {
         buttonOlustur = new JButton("Soy Ağacını Oluştur");
         buttonOlustur.setBounds(770, 690, 150, 30);
         buttonOlustur.addActionListener(this);
+
+        root = new DefaultMutableTreeNode("Root");
+        jTree = new JTree(root);
+        jTree.setBounds(50,50,1000,600);
+
+        parents = new DefaultMutableTreeNode("Parents");
+        spouse = new DefaultMutableTreeNode("Spouse");
+        children = new DefaultMutableTreeNode("Children");
+
+        root.add(parents);
+        root.add(spouse);
+        root.add(children);
 
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -138,6 +156,7 @@ public class UI implements ActionListener {
 
         firstPanel.add(buttonTemizle);
         firstPanel.add(buttonOlustur);
+        firstPanel.add(jTree);
 
         secondControlPanel.add(labelsPanel);
         secondControlPanel.add(textfieldsPanel);
@@ -159,15 +178,19 @@ public class UI implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == buttonEkle) {
-            JLabel tempLabel = new JLabel(textFieldAd.getText() + " " + textFieldSoyad.getText());
-            tempLabel.setBorder(new CompoundBorder(border, margin));
-            tempLabel.setBounds(0, 0, 80, 30);
+        if(e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 0)){
+//            JLabel tempLabel = new JLabel(textFieldAd.getText() + " " + textFieldSoyad.getText());
+//            tempLabel.setBorder(new CompoundBorder(border, margin));
+//            tempLabel.setBounds(0,0,80,30);
+//
+//            firstControlPanel.add(tempLabel);
+//            firstControlPanel.add(Box.createRigidArea(new Dimension(0,15)));
+//            firstPanel.add(firstControlPanel);
 
-            firstControlPanel.add(tempLabel);
-            firstControlPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-            firstPanel.add(firstControlPanel);
-            SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
+            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Annesi)");
+            parents.add(tempNode);
+            SwingUtilities.updateComponentTreeUI(firstPanel); //reload the firstPanel after every person add
+
 
             System.out.println(textFieldAd.getText());
             System.out.println(textFieldSoyad.getText());
@@ -178,9 +201,9 @@ public class UI implements ActionListener {
             System.out.println(comboBoxCinsiyet.getSelectedIndex());
         }
 
-        if (e.getSource() == comboBoxAkraba) {
-            System.out.println(comboBoxAkraba.getSelectedIndex());
-        }
+//        if (e.getSource() == comboBoxAkraba) {
+//            System.out.println(comboBoxAkraba.getSelectedIndex());
+//        }
 
         if (e.getSource() == buttonTemizle) {
             firstControlPanel.removeAll();
