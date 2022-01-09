@@ -2,6 +2,7 @@ package GUI;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,12 +13,12 @@ public class UI implements ActionListener {
     JPanel firstPanel;
     JPanel secondPanel;
     JPanel thirdPanel;
-    JPanel labelsPanel;
+    JPanel labelsPanel;//
     JPanel textfieldsPanel;
     JPanel firstControlPanel;
     JPanel secondControlPanel;
     Border border = BorderFactory.createLineBorder(Color.black);
-    Border margin = new EmptyBorder(10, 10, 10, 10);
+    Border margin = new EmptyBorder(10, 10, 10, 10);//
     JButton buttonEkle;
     JButton buttonTemizle;
     JButton buttonOlustur;
@@ -32,7 +33,7 @@ public class UI implements ActionListener {
     JComboBox comboBoxCinsiyet;
     String[] cinsiyet = { "Kadın", "Erkek" };
     JComboBox comboBoxAkraba;
-    String[] akraba = { "Anne", "Baba", "Kardeş", "Amca", "Teyze", "Dayı", "Hala", "Eş" };
+    String[] akraba = { "Anne", "Baba", "Kardeş", "Eş", "Çocuk" };
 
     UI() {
         firstPanel = new JPanel();
@@ -44,6 +45,7 @@ public class UI implements ActionListener {
         secondPanel.setBorder(border);
         secondPanel.setBounds(1100, 0, 430, 400);
         secondPanel.setLayout(new BoxLayout(secondPanel, BoxLayout.LINE_AXIS));
+        // secondPanel.setLayout(new GridLayout());
 
         secondControlPanel = new JPanel();
         secondControlPanel.setLayout(new GridLayout());
@@ -53,7 +55,12 @@ public class UI implements ActionListener {
         thirdPanel.setBounds(1100, 400, 430, 400);
         thirdPanel.setLayout(new BoxLayout(thirdPanel, BoxLayout.PAGE_AXIS));
 
+        firstControlPanel = new JPanel();
+        firstControlPanel.setBounds(20, 20, 1100, 800);
+        firstControlPanel.setLayout(new BoxLayout(firstControlPanel, BoxLayout.PAGE_AXIS));
+
         labelsPanel = new JPanel();
+        // labelsPanel.setBounds(0,50,30,200);
         labelsPanel.setLayout(new BoxLayout(labelsPanel, BoxLayout.PAGE_AXIS));
 
         textfieldsPanel = new JPanel();
@@ -99,6 +106,16 @@ public class UI implements ActionListener {
         buttonTemizle.setBounds(930, 690, 80, 30);
         buttonTemizle.addActionListener(this);
 
+        buttonOlustur = new JButton("Soy Ağacını Oluştur");
+        buttonOlustur.setBounds(770, 690, 150, 30);
+        buttonOlustur.addActionListener(this);
+
+        frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setVisible(true);
+
         textfieldsPanel.add(Box.createRigidArea(new Dimension(0, 15))); // margin
         textfieldsPanel.add(textFieldAd);
         textfieldsPanel.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -119,11 +136,8 @@ public class UI implements ActionListener {
         labelsPanel.add(labelCinsiyet);
         labelsPanel.add(Box.createRigidArea(new Dimension(0, 18)));
 
-        frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setVisible(true);
+        firstPanel.add(buttonTemizle);
+        firstPanel.add(buttonOlustur);
 
         secondControlPanel.add(labelsPanel);
         secondControlPanel.add(textfieldsPanel);
@@ -136,15 +150,45 @@ public class UI implements ActionListener {
         frame.add(firstPanel);
         frame.add(secondPanel);
         frame.add(thirdPanel);
+
     }
 
     public static void main(String[] args) {
         UI ui = new UI();
-
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == buttonEkle) {
+            JLabel tempLabel = new JLabel(textFieldAd.getText() + " " + textFieldSoyad.getText());
+            tempLabel.setBorder(new CompoundBorder(border, margin));
+            tempLabel.setBounds(0, 0, 80, 30);
 
+            firstControlPanel.add(tempLabel);
+            firstControlPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+            firstPanel.add(firstControlPanel);
+            SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
+
+            System.out.println(textFieldAd.getText());
+            System.out.println(textFieldSoyad.getText());
+            System.out.println(textFieldDogumTarihi.getText());
+        }
+
+        if (e.getSource() == comboBoxCinsiyet) {
+            System.out.println(comboBoxCinsiyet.getSelectedIndex());
+        }
+
+        if (e.getSource() == comboBoxAkraba) {
+            System.out.println(comboBoxAkraba.getSelectedIndex());
+        }
+
+        if (e.getSource() == buttonTemizle) {
+            firstControlPanel.removeAll();
+            SwingUtilities.updateComponentTreeUI(firstControlPanel);
+        }
+
+        if (e.getSource() == buttonOlustur) {
+
+        }
     }
 }
