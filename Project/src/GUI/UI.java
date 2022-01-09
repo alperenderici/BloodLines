@@ -24,9 +24,7 @@ public class UI {
     String[] cinsiyet = {"Kadın","Erkek"};
     JComboBox comboBoxAkraba;
     String[] akraba = {"Anne","Baba","Kardeş","Amca","Teyze","Dayı","Hala","Eş"};
-
     Border border = BorderFactory.createLineBorder(Color.black);
-
     UI(){
         firstPanel = new JPanel();
         firstPanel.setBorder(border);
@@ -40,18 +38,23 @@ public class UI {
         thirdPanel.setBorder(border);
         thirdPanel.setBounds(1100, 400, 430, 400);
         thirdPanel.setLayout(null);
-
         labelAd = new JLabel();
         labelAd.setText("Ad: ");
-
         labelSoyAd = new JLabel();
         labelSoyAd.setText("Soyad: ");
-
         labelDogumTarihi = new JLabel();
         labelDogumTarihi.setText("Doğum Tarihi: ");
-
         labelCinsiyet = new JLabel();
         labelCinsiyet.setText("Cinsiyet: ");
+
+        textFieldAd = new JTextField();
+        textFieldAd.setMaximumSize(new Dimension(Integer.MAX_VALUE, textFieldAd.getMinimumSize().height));
+
+        textFieldSoyad = new JTextField();
+        textFieldSoyad.setMaximumSize(new Dimension(Integer.MAX_VALUE, textFieldSoyad.getMinimumSize().height));
+
+        textFieldDogumTarihi = new JTextField();
+        textFieldDogumTarihi.setMaximumSize(new Dimension(Integer.MAX_VALUE, textFieldDogumTarihi.getMinimumSize().height));
 
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
