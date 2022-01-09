@@ -1,9 +1,10 @@
+//BABA VE ANNE DEN EKLENEN COCUK SENARYOSU AMCA=HALA
+/*
 package projectPack;
 
-public class Main {
-    public static void main(String[] args) {
-        Person person = new Person();
-        Relation relation = new Relation();
+public class amcaHalaSenaryo {
+    Person person = new Person();
+    Relation relation = new Relation();
 
         System.out.println("Kişi ekleme hoş geldiniz.");
         person.personAdder();//ilk kisi eklendi
@@ -26,6 +27,5 @@ public class Main {
         person.persons.get(0).viewPersonInfo();
         person.amcaHala(relation,1,5,1);
         person.amcaHala(relation,1,5,2);
-
-    }
 }
+*/

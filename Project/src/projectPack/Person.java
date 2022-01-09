@@ -55,7 +55,6 @@ public class Person {
     }
     public void motherFather(){
         try {
-
         if (parents.spouse1.gender){
             parents.father.add(parents.spouse1);
             parents.mother.add(parents.spouse2);
@@ -71,19 +70,50 @@ public class Person {
     }
 
     public void kayinPederValide(Relation relation, int relationID, int personID){
-
+        try {
         if (persons.get(personID).parents.spouse1.gender){
             System.out.println("Kayınpeder: "+persons.get(personID).parents.spouse1.name);
+            System.out.println("Kayınvalide: "+persons.get(personID).parents.spouse2.name);
+        }else if (persons.get(personID).parents.spouse2.gender){
+            System.out.println("Kayınpeder: "+persons.get(personID).parents.spouse2.name);
+            System.out.println("Kayınvalide: "+persons.get(personID).parents.spouse1.name);
+        }
+        }catch (NullPointerException e){
+            e.getMessage();
+        }
+    }
+
+    public void amcaHala(Relation relation, int relationID, int personID, int childrenID){
+        try {
+            if (relation.relations.get(relationID).children.get(childrenID).gender){
+                System.out.println("Amca: "+relation.relations.get(relationID).children.get(childrenID).name);
+            }else {
+                System.out.println("Hala: "+relation.relations.get(relationID).children.get(childrenID).name);
+            }
+        }catch (NullPointerException e){
+            e.getMessage();
+        }
+    }
+
+    public void dayiTeyze(Relation relation, int relationID, int personID){
+        try {
+
+        }catch (NullPointerException e){
+            e.getMessage();
         }
     }
 
 
-
     public void grandParents(){
+        try {
+
         if (parents.spouse1.parents.spouse1.gender) System.out.println("Dede adı: "+parents.spouse1.parents.spouse1.name+"\nBabaanne adı: "+parents.spouse1.parents.spouse2.name);
         else System.out.println("Dede adı: "+parents.spouse1.parents.spouse2.name+"\nBabaanne adı: "+parents.spouse1.parents.spouse1.name);
         if (parents.spouse2.parents.spouse1.gender) System.out.println("Dede adı: "+parents.spouse2.parents.spouse1.name+"\nAnneanne adı: "+parents.spouse2.parents.spouse2.name);
         else System.out.println("Dede adı: "+parents.spouse2.parents.spouse2.name+"\nAnneanne adı: "+parents.spouse2.parents.spouse1.name);
+        }catch (NullPointerException e){
+            e.getMessage();
+        }
     }
 
     public void showPersons(Person person){
@@ -99,6 +129,7 @@ public class Person {
         System.out.println("Cinsiyeti: "+gender);
         motherFather();
         grandParents();
+
         System.out.println();
 
     }

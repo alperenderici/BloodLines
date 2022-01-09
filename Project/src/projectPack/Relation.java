@@ -13,6 +13,7 @@ public class Relation {
     ArrayList<Person> father = new ArrayList<Person>();
     ArrayList<Person> mother = new ArrayList<Person>();
     ArrayList<Person> partner = new ArrayList<Person>();
+    ArrayList<Person> brother = new ArrayList<Person>();
 
     public Relation(){
 
