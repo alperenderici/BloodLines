@@ -11,7 +11,6 @@ public class Person {
     String surname;
     String birthday;
     Boolean gender;
-    ArrayList<Person> brother;
 
     ArrayList<Person> persons = new ArrayList<Person>();
 
@@ -55,11 +54,11 @@ public class Person {
 
     }
 
-    public void brotherAdder(Relation relation, int relationID, int personID,int secondID){//TODO BURADA SIKINTI VAR!!!!!!!
+    public void brotherAdder(Relation relation, int relationID, int relationdakiSpouseID){//TODO BURADA SIKINTI VAR!!!!!!!
         try {
-            relation.brother.add(relation.relations.get(relationID).children.get(personID));
-            relation.brother.add(relation.relations.get(relationID).children.get(secondID));
-            System.out.println("Kardeş: "+relation.brother.get(personID).name);
+            relation.brother.add(relation.relations.get(relationID).spouse1);
+            relation.brother.add(relation.relations.get(relationID).spouse2);
+            System.out.println("Kardeş adı: "+relation.brother.get(relationdakiSpouseID).name);
         }catch (NullPointerException e){
             e.getMessage();
         }
@@ -146,12 +145,16 @@ public class Person {
 
     public void kuzen(Relation relation, int relationID,int personId, int childrenID){
         try {
-            if (!persons.get(personId).brother.isEmpty() && !relation.relations.get(relationID).children.isEmpty()){//TODO BURADA SIKINTI VAR!!!!!!!
-                System.out.println("Kuzen: "+relation.relations.get(relationID).children.get(childrenID).name);
-            }else
-            {
-                System.out.println("Kuzen yok!");
-            }
+
+            relation.relations.get(relationID).children.get(personId);
+           // relation.relations.get(relationID).brother.get(personId);
+
+//            if (!persons.get(personId).brother.isEmpty() && !relation.relations.get(relationID).children.isEmpty()){//TODO BURADA SIKINTI VAR!!!!!!!
+//                System.out.println("Kuzen: "+relation.relations.get(relationID).children.get(childrenID).name);
+//            }else
+//            {
+//                System.out.println("Kuzen yok!");
+//            }
 
         }catch (NullPointerException e){
             e.getMessage();

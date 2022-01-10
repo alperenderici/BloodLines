@@ -4,10 +4,7 @@ public class Main {
     public static void main(String[] args) {
         Person person = new Person();
         Relation relation = new Relation();
-
-        System.out.println("Kişi ekleme hoş geldiniz.");
-        person.personAdder();//ilk kisi eklendi
-
+        person.personAdder();// biz eklendik id=0
         person.personAdder();//es kisi eklendi id=1
 
         person.personAdder();//babam kisi eklendi id=2
@@ -16,7 +13,7 @@ public class Main {
         person.personAdder();//cocuk kisi eklendi id=4
 
         person.personAdder();//yenge kisi eklendi id=5
-        person.personAdder();//kardes kisi eklendi id=6
+        person.personAdder();//kardes/amca kisi eklendi id=6
         person.personAdder();//kuzen kisi eklendi id=7
 
         relation.relationAdder(person.persons.get(0),person.persons.get(1));//biz esim
@@ -29,10 +26,13 @@ public class Main {
         person.childrenAdder(relation,1,6);//amca eklend
         person.childrenAdder(relation,2,7);//kuzen amca yenge eklend
 
-        person.brotherAdder(relation,1,0,6);
+        relation.relationAdder(person.persons.get(2),person.persons.get(6)); // babamizla kardesi amcamizin relationi
+
+        person.brotherAdder(relation,3,2);//su 2 spouse2 yani amcamiz (babamizin kardesi)
 
 
         person.kuzen(relation,2,2,7);
+
 
 
 
