@@ -54,7 +54,7 @@ public class Person {
 
     }
 
-    public void brotherAdder(Relation relation, int relationID, int relationdakiSpouseID){//TODO BURADA SIKINTI VAR!!!!!!!
+    public void brotherAdder(Relation relation, int relationID, int relationdakiSpouseID){//spouse idye bastiriyo bunu bir daha islememiz gerekebilir.
         try {
             relation.brother.add(relation.relations.get(relationID).spouse1);
             relation.brother.add(relation.relations.get(relationID).spouse2);
@@ -145,9 +145,7 @@ public class Person {
 
     public void kuzen(Relation relation, int relationID,int personId, int childrenID){
         try {
-
-            relation.relations.get(relationID).children.get(personId);
-           // relation.relations.get(relationID).brother.get(personId);
+            //todo burda relations uzerinden buldurmamiz gerekicek bu classtaki brother listi sildim cunk
 
 //            if (!persons.get(personId).brother.isEmpty() && !relation.relations.get(relationID).children.isEmpty()){//TODO BURADA SIKINTI VAR!!!!!!!
 //                System.out.println("Kuzen: "+relation.relations.get(relationID).children.get(childrenID).name);
