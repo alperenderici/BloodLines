@@ -143,17 +143,14 @@ public class Person {
         }
     }
 
-    public void kuzen(Relation relation, int relationID,int personId, int childrenID){
+    public void kuzen(Relation relation, int relationID,int personId, int cousinID){
         try {
-            //todo burda relations uzerinden buldurmamiz gerekicek bu classtaki brother listi sildim cunk
 
-//            if (!persons.get(personId).brother.isEmpty() && !relation.relations.get(relationID).children.isEmpty()){//TODO BURADA SIKINTI VAR!!!!!!!
-//                System.out.println("Kuzen: "+relation.relations.get(relationID).children.get(childrenID).name);
-//            }else
-//            {
-//                System.out.println("Kuzen yok!");
-//            }
-
+            if (persons.get(personId).id == relation.relations.get(relationID).children.get(cousinID).id){
+                System.out.println("Kuzen: "+persons.get(personId).name);
+            }else {
+                System.out.println("Kuzen yok");
+            }
         }catch (NullPointerException e){
             e.getMessage();
         }

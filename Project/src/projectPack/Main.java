@@ -17,24 +17,22 @@ public class Main {
         person.personAdder();//kuzen kisi eklendi id=7
 
         relation.relationAdder(person.persons.get(0),person.persons.get(1));//biz esim
-        relation.relationAdder(person.persons.get(2),person.persons.get(3));//anne baba rel
+        relation.relationAdder(person.persons.get(2),person.persons.get(3));//anne baba rel 1
 
-        relation.relationAdder(person.persons.get(6),person.persons.get(5));//yenge kardes rel
+        relation.relationAdder(person.persons.get(6),person.persons.get(5));//yenge amca rel 2
 
         person.childrenAdder(relation,0,4);//cocuk bizim
         person.childrenAdder(relation,1,0);//biz anne-baba eklend
         person.childrenAdder(relation,1,6);//amca eklend
         person.childrenAdder(relation,2,7);//kuzen amca yenge eklend
 
-        relation.relationAdder(person.persons.get(2),person.persons.get(6)); // babamizla kardesi amcamizin relationi
+        relation.relationAdder(person.persons.get(2),person.persons.get(6)); // babamizla kardesi amcamizin relation 3
 
-        person.brotherAdder(relation,3,2);//su 2 spouse2 yani amcamiz (babamizin kardesi)
+        person.brotherAdder(relation,3,1);//su 2 spouse2 yani amcamiz (babamizin kardesi)
 
+        person.kuzen(relation,2,7,0);
 
-        person.kuzen(relation,2,2,7);
-
-
-
+        person.persons.get(2).viewPersonInfo();
 
 
 
