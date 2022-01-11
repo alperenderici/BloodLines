@@ -1,5 +1,7 @@
 package projectPack;
 
+import GUI.UI;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -25,6 +27,8 @@ public class Person {
     Scanner scanner = new Scanner(System.in);
     Scanner scanner2 = new Scanner(System.in);
 
+    UI ui = new UI();
+
     public Person(){
         name = "bos";
         surname = "bos";
@@ -37,12 +41,11 @@ public class Person {
         System.out.println("Kisi bilgilerini giriniz");
         Relation tempRelation = new Relation();
         System.out.println("Ad: ");
-        String tempName = scanner.nextLine();
+        String tempName = ui.textFieldAd.getText();
         System.out.println("Soyad: ");
-        String tempSurname = scanner.nextLine();
+        String tempSurname = ui.textFieldSoyad.getText();
         System.out.println("Doğum tarihi (dd/MM/yyyy): ");
-        String tempDate = scanner2.nextLine();
-        //TODO B U R A Y A  B A K I N
+        String tempDate = ui.textFieldDogumTarihi.getText();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date2=null;
         try {
@@ -51,22 +54,26 @@ public class Person {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        //System.out.println(date2);
 
 
         System.out.println("Cinsiyet(E/K): ");
-        String inputForGender = scanner.nextLine();
-        Boolean tempGender;
-        if (inputForGender.equals("E")||inputForGender.equals("e")){
-            tempGender = true;
+        Boolean inputForGender = true;
+        if(ui.comboBoxCinsiyet.getSelectedIndex() == 0){
+            inputForGender = true;
         }
-        else if (inputForGender.equals("K")||inputForGender.equals("k")){
-            tempGender = false;
-        }else {
-            tempGender = null;
+        else if(ui.comboBoxCinsiyet.getSelectedIndex() == 1){
+            inputForGender = false;
         }
+//        if (inputForGender.equals("E")||inputForGender.equals("e")){
+//            tempGender = true;
+//        }
+//        else if (inputForGender.equals("K")||inputForGender.equals("k")){
+//            tempGender = false;
+//        }else {
+//            tempGender = null;
+//        }
 
-        persons.add(new Person(tempRelation,tempName,tempSurname,date2,tempGender));
+        persons.add(new Person(tempRelation,tempName,tempSurname,date2,inputForGender));
     }
 
     public void childrenAdder(Relation relation, int relationID, int personID){

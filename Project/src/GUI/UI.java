@@ -1,5 +1,8 @@
 package GUI;
 
+import projectPack.Person;
+import projectPack.Relation;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -28,10 +31,10 @@ public class UI implements ActionListener {
     JLabel labelDogumTarihi;
     JLabel labelCinsiyet;
     JLabel labelAkraba;
-    JTextField textFieldAd;
-    JTextField textFieldSoyad;
-    JTextField textFieldDogumTarihi;
-    JComboBox comboBoxCinsiyet;
+    public JTextField textFieldAd;
+    public JTextField textFieldSoyad;
+    public JTextField textFieldDogumTarihi;
+    public JComboBox comboBoxCinsiyet;
     String[] cinsiyet = { "Kadın", "Erkek" };
     JComboBox comboBoxAkraba;
     String[] akraba = { "Ben", "Anne", "Baba", "Kardeş", "Eş", "Çocuk" };
@@ -43,7 +46,11 @@ public class UI implements ActionListener {
     DefaultMutableTreeNode children;
     DefaultMutableTreeNode broSis;
 
-    UI() {
+//    Person person = new Person();
+//    Relation relation = new Relation();
+
+
+    public UI() {
         firstPanel = new JPanel();
         firstPanel.setBorder(border);
         firstPanel.setBounds(0, 0, 1100, 800);
@@ -81,7 +88,7 @@ public class UI implements ActionListener {
         labelSoyAd.setText("Soyad: ");
 
         labelDogumTarihi = new JLabel();
-        labelDogumTarihi.setText("Doğum Tarihi: ");
+        labelDogumTarihi.setText("Doğum Tarihi (dd/MM/yyyy): ");
 
         labelCinsiyet = new JLabel();
         labelCinsiyet.setText("Cinsiyet: ");
@@ -189,6 +196,7 @@ public class UI implements ActionListener {
             root.setUserObject(textFieldAd.getText() + " " + textFieldSoyad.getText() + "(Kendisi)");
             model.nodeChanged(root);
 
+
             SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
 
             System.out.println(textFieldAd.getText());
@@ -196,6 +204,7 @@ public class UI implements ActionListener {
             System.out.println(textFieldDogumTarihi.getText());
 
         }
+
 
         if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 1)) {
             // JLabel tempLabel = new JLabel(textFieldAd.getText() + " " +
@@ -209,6 +218,7 @@ public class UI implements ActionListener {
 
             DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(
                     textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Annesi)");
+
             parents.add(tempNode);
             SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
 
