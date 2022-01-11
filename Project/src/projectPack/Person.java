@@ -1,6 +1,13 @@
 package projectPack;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Person {
@@ -9,17 +16,19 @@ public class Person {
     Relation parents;
     String name;
     String surname;
-    String birthday;
+    Date birthday;
     Boolean gender;
+
 
     ArrayList<Person> persons = new ArrayList<Person>();
 
     Scanner scanner = new Scanner(System.in);
+    Scanner scanner2 = new Scanner(System.in);
 
     public Person(){
         name = "bos";
         surname = "bos";
-        birthday = "bos";
+        birthday = new Date(0,0,0,0,0,0);
         gender = null;
     }
 
@@ -31,8 +40,20 @@ public class Person {
         String tempName = scanner.nextLine();
         System.out.println("Soyad: ");
         String tempSurname = scanner.nextLine();
-        System.out.println("Doğum tarihi: ");
-        String tempBirthday = scanner.nextLine();
+        System.out.println("Doğum tarihi (dd/MM/yyyy): ");
+        String tempDate = scanner2.nextLine();
+        //TODO B U R A Y A  B A K I N
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date2=null;
+        try {
+            //Parsing the String
+            date2 = dateFormat.parse(tempDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //System.out.println(date2);
+
+
         System.out.println("Cinsiyet(E/K): ");
         String inputForGender = scanner.nextLine();
         Boolean tempGender;
@@ -45,20 +66,27 @@ public class Person {
             tempGender = null;
         }
 
-        persons.add(new Person(tempRelation,tempName,tempSurname,tempBirthday,tempGender));
+        persons.add(new Person(tempRelation,tempName,tempSurname,date2,tempGender));
     }
 
     public void childrenAdder(Relation relation, int relationID, int personID){
         relation.relations.get(relationID).children.add(persons.get(personID));
         persons.get(personID).parents = relation.relations.get(relationID);
-
     }
 
     public void brotherAdder(Relation relation, int relationID, int relationdakiSpouseID){//spouse idye bastiriyo bunu bir daha islememiz gerekebilir.
         try {
             relation.brother.add(relation.relations.get(relationID).spouse1);
             relation.brother.add(relation.relations.get(relationID).spouse2);
-            System.out.println("Kardeş adı: "+relation.brother.get(relationdakiSpouseID).name);
+            if (relation.relations.get(relationID).spouse1.birthday.after(relation.relations.get(relationID).spouse2.birthday)){
+                if (relation.relations.get(relationID).spouse2.gender){
+                    System.out.println("Abi adı: "+relation.brother.get(relationdakiSpouseID).name);
+                }else {
+                    System.out.println("Abla adı: "+relation.brother.get(relationdakiSpouseID).name);
+                }
+            }else {
+                System.out.println("Kardeş adı: "+relation.brother.get(relationdakiSpouseID).name);
+            }
         }catch (NullPointerException e){
             e.getMessage();
         }
@@ -68,6 +96,7 @@ public class Person {
         try {
         if (parents.spouse1.gender){
             parents.father.add(parents.spouse1);
+
             parents.mother.add(parents.spouse2);
             System.out.println("Baba adı: " + parents.spouse1.name + "\nAnne adı: " + parents.spouse2.name);
         }else if (parents.spouse2.gender){
@@ -82,13 +111,13 @@ public class Person {
 
     public void kayinPederValide(Relation relation, int relationID, int personID){
         try {
-        if (persons.get(personID).parents.spouse1.gender){
-            System.out.println("Kayınpeder: "+persons.get(personID).parents.spouse1.name);
-            System.out.println("Kayınvalide: "+persons.get(personID).parents.spouse2.name);
-        }else if (persons.get(personID).parents.spouse2.gender){
-            System.out.println("Kayınpeder: "+persons.get(personID).parents.spouse2.name);
-            System.out.println("Kayınvalide: "+persons.get(personID).parents.spouse1.name);
-        }
+            if (persons.get(personID).parents.spouse1.gender){
+                System.out.println("Kayınpeder: "+persons.get(personID).parents.spouse1.name);
+                System.out.println("Kayınvalide: "+persons.get(personID).parents.spouse2.name);
+            }else if (persons.get(personID).parents.spouse2.gender){
+                System.out.println("Kayınpeder: "+persons.get(personID).parents.spouse2.name);
+                System.out.println("Kayınvalide: "+persons.get(personID).parents.spouse1.name);
+            }
         }catch (NullPointerException e){
             e.getMessage();
         }
@@ -156,7 +185,7 @@ public class Person {
         }
     }
 
-    public void torun(Relation relation, int dederelationID, int babarelationID, int childrenID, int torunID){//TODO BURADA SIKINTI VAR!!!!!!!
+    public void torun(Relation relation, int dederelationID, int babarelationID, int childrenID, int torunID){
         try {
             if (relation.relations.get(dederelationID).children.get(childrenID).id == relation.relations.get(babarelationID).spouse1.id){
                 if (!relation.relations.get(babarelationID).children.isEmpty()){
@@ -197,7 +226,7 @@ public class Person {
 
     }
 
-    public Person(projectPack.Relation parents, String name, String surname, String birthday, Boolean gender){
+    public Person(projectPack.Relation parents, String name, String surname, Date birthday, Boolean gender){
         this.parents = parents;
         this.name = name;
         this.surname = surname;
@@ -207,6 +236,13 @@ public class Person {
         personCounter++;
     }
 
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
 
     public Relation getParents() {
         return parents;
@@ -230,14 +266,6 @@ public class Person {
 
     public void setSurname(String surname) {
         this.surname = surname;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
     }
 
     public Boolean getGender() {
