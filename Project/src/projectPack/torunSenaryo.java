@@ -1,9 +1,9 @@
+/*
 package projectPack;
 
-public class Main {
-    public static void main(String[] args) {
-        Person person = new Person();
-        Relation relation = new Relation();
+public class torunSenaryo {
+    Person person = new Person();
+    Relation relation = new Relation();
         person.personAdder();// biz eklendik id=0
         person.personAdder();//es kisi eklendi id=1
 
@@ -20,8 +20,5 @@ public class Main {
         person.childrenAdder(relation,1,0);//biz anne-baba eklend
 
         person.torun(relation,1,0,0,0);
-
-
-
-    }
 }
+*/

@@ -156,9 +156,24 @@ public class Person {
         }
     }
 
-    public void torun(Relation relation, int relationID, int personID){//TODO BURADA SIKINTI VAR!!!!!!!
+    public void torun(Relation relation, int dederelationID, int babarelationID, int childrenID, int torunID){//TODO BURADA SIKINTI VAR!!!!!!!
         try {
-            System.out.println("Torun: "+relation.relations.get(relationID).children.get(personID).name);//havada kalmis gibi
+            if (relation.relations.get(dederelationID).children.get(childrenID).id == relation.relations.get(babarelationID).spouse1.id){
+                if (!relation.relations.get(babarelationID).children.isEmpty()){
+                    System.out.println("Torun: "+relation.relations.get(babarelationID).children.get(torunID).name);
+                }
+                else {
+                    System.out.println("Torun yok!");
+                }
+            }
+            else if (relation.relations.get(dederelationID).children.get(childrenID).id == relation.relations.get(babarelationID).spouse2.id){
+                if (!relation.relations.get(babarelationID).children.isEmpty()){
+                    System.out.println("Torun: "+relation.relations.get(babarelationID).children.get(torunID).name);
+                }
+                else {
+                    System.out.println("Torun yok!");
+                }
+            }
         }catch (NullPointerException e){
             e.getMessage();
         }
