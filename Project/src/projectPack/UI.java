@@ -298,16 +298,13 @@ public class UI extends Person implements ActionListener {
                     textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Annesi)");
 
             parents.add(tempNode);
-
-
             personAdder(tempRelation,tempName,tempSurname,tempDateDogum,false);
             SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
 
             tempRelation.relationAdder(persons.get(0),persons.get(personCounter));
-            motherFather();
+            motherFather(tempRelation,persons.get(0).id,tempRelation.spouse2);
             viewPersonInfo();
-            System.out.println(tempRelation.relations.get(tempRelation.relCounter));
-            System.out.println(tempRelation.relations.get(tempRelation.relCounter).mother);
+            System.out.println(tempRelation.relations.get(tempRelation.id));
 
             personCounter++;
             //tempRelation.id++;
@@ -350,10 +347,9 @@ public class UI extends Person implements ActionListener {
             SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
 
             tempRelation.relationAdder(persons.get(0),persons.get(personCounter));
-            motherFather();
+            motherFather(tempRelation,persons.get(0).id,tempRelation.spouse2);
             viewPersonInfo();
-            System.out.println(tempRelation.relations.get(tempRelation.relCounter));
-            System.out.println(tempRelation.relations.get(tempRelation.relCounter).father);
+            System.out.println(tempRelation.relations.get(tempRelation.id));
 
             personCounter++;
             tempRelation.relCounter++;
@@ -638,7 +634,6 @@ public class UI extends Person implements ActionListener {
         System.out.println("Soyadı: "+tempSurname);
         System.out.println("Doğum Tarihi: "+tempDogum);
         System.out.println("Cinsiyeti: "+tempGender);
-        motherFather();
         grandParents();
 
         System.out.println();
@@ -721,18 +716,25 @@ class Person {
 //        }
 //    }
 
-    public void motherFather() {
-        gender = true;
-        try {
-            if (gender) {
-                parents.father.add(parents.spouse1);
+    public void motherFather(Relation relation,int childRel,Person person) {
 
-                parents.mother.add(parents.spouse2);
-                System.out.println("Baba adı: " + parents.spouse1.name + "\nAnne adı: " + parents.spouse2.name);
-            } else if (!gender) { //parents.spouse2.gender
-                parents.father.add(parents.spouse2);
-                parents.mother.add(parents.spouse1);
-                System.out.println("Baba adı: " + parents.spouse2.name + "\nAnne adı: " + parents.spouse1.name);
+        try {
+            if (person.gender) {
+                Relation tempR = new Relation();
+                tempR.relationAdder(person, person.parents.spouse2);
+                relation.relations.get(childRel).mother.add(tempR.spouse2);
+                relation.relations.get(childRel).father.add(tempR.spouse1);
+                parents.father = tempR.relations.get(childRel).father;
+                parents.mother = tempR.relations.get(childRel).mother;
+                System.out.println("Baba adi: " + relation.relations.get(childRel).father.get(tempR.id).name+ "\nAnne adı: " +relation.relations.get(childRel).mother.get(tempR.id).name);
+            } else {
+                Relation tempR = new Relation();
+                tempR.relationAdder(person.parents.spouse1, person);
+                relation.relations.get(childRel).mother.add(tempR.spouse1);
+                relation.relations.get(childRel).father.add(tempR.spouse2);
+                parents.father = tempR.relations.get(childRel).father;
+                parents.mother = tempR.relations.get(childRel).mother;
+                System.out.println("Baba adi: " + relation.relations.get(childRel).father.get(tempR.id).name+ "\nAnne adı: " +relation.relations.get(childRel).mother.get(tempR.id).name);
             }
         } catch (NullPointerException e) {
             e.getMessage();
