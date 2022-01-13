@@ -2,25 +2,18 @@ package projectPack;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Scanner;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 public class UI extends Person implements ActionListener {
     JFrame frame;
@@ -31,25 +24,23 @@ public class UI extends Person implements ActionListener {
     JPanel textfieldsPanel;
     JPanel firstControlPanel;
     JPanel secondControlPanel;
-    Border border = BorderFactory.createLineBorder(Color.black);
-    Border margin = new EmptyBorder(10, 10, 10, 10);//
     JButton buttonEkle;
     JButton buttonTemizle;
-    JButton buttonKisiSil;
     JButton save;
     JLabel labelAd;
     JLabel labelSoyAd;
     JLabel labelDogumTarihi;
     JLabel labelCinsiyet;
     JLabel labelAkraba;
-    public JTextField textFieldAd;
-    public JTextField textFieldSoyad;
-    public JTextField textFieldDogumTarihi;
-    public JComboBox comboBoxCinsiyet;
+    JLabel labelHelp;
+    JTextField textFieldAd;
+    JTextField textFieldSoyad;
+    JTextField textFieldDogumTarihi;
+    JComboBox comboBoxCinsiyet;
     String[] cinsiyet = { "Kadın", "Erkek" };
     JComboBox comboBoxAkraba;
-    String[] akraba = { "Ben", "Anne", "Baba", "Kardeş", "Eş", "Çocuk", "Anneanne", "Dede (anne tarafı)", "Babaanne", "Dede (baba tarafı)", "Kayınvalide", "Kayınpeder" };
-
+    String[] akraba = { "Ben", "Anne", "Baba", "Kardeş", "Eş", "Çocuk", "Anneanne", "Dede (anne tarafı)", "Babaanne", "Dede (baba tarafı)", "Kayınvalide", "Kayınpeder", "Teyze","Dayı","Hala","Amca" };
+    URI uri;
     JTree jTree;
     DefaultMutableTreeNode root;
     DefaultMutableTreeNode grandParents;
@@ -57,40 +48,30 @@ public class UI extends Person implements ActionListener {
     DefaultMutableTreeNode parents1;
     DefaultMutableTreeNode parents2;
     DefaultMutableTreeNode spouse;
-    DefaultMutableTreeNode spouseNodeNonvisible;
     DefaultMutableTreeNode children;
     DefaultMutableTreeNode broSis;
+    DefaultMutableTreeNode anneKardesleri;
+    DefaultMutableTreeNode babaKardesleri;
 
-//    Person person = new Person();
-//    Relation relation = new Relation();
-
-
-    public UI() {
+    public UI() throws URISyntaxException {
         firstPanel = new JPanel();
-        //firstPanel.setBorder(border);
         firstPanel.setBounds(0, 0, 1100, 800);
         firstPanel.setLayout(null);
 
         secondPanel = new JPanel();
-        //secondPanel.setBorder(border);
         secondPanel.setBounds(1100, 0, 430, 400);
         secondPanel.setLayout(new BoxLayout(secondPanel, BoxLayout.LINE_AXIS));
-        // secondPanel.setLayout(new GridLayout());
 
         secondControlPanel = new JPanel();
         secondControlPanel.setLayout(new GridLayout());
 
         thirdPanel = new JPanel();
-        //thirdPanel.setBorder(border);
         thirdPanel.setBounds(1100, 400, 430, 400);
         thirdPanel.setLayout(new BoxLayout(thirdPanel, BoxLayout.PAGE_AXIS));
 
         firstControlPanel = new JPanel();
-        //firstControlPanel.setBounds(20, 20, 1100, 800);
-        //firstControlPanel.setLayout(new BoxLayout(firstControlPanel, BoxLayout.PAGE_AXIS));
 
         labelsPanel = new JPanel();
-        // labelsPanel.setBounds(0,50,30,200);
         labelsPanel.setLayout(new BoxLayout(labelsPanel, BoxLayout.PAGE_AXIS));
 
         textfieldsPanel = new JPanel();
@@ -107,6 +88,15 @@ public class UI extends Person implements ActionListener {
 
         labelCinsiyet = new JLabel();
         labelCinsiyet.setText("Cinsiyet: ");
+
+        try {
+            uri = new URI("https://cntrktzr.github.io/website.github.io/");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        labelHelp = new JLabel();
+        labelHelp.setText("Yardım: " + uri);
+        labelHelp.setBounds(10, 720, 310, 30);
 
         textFieldAd = new JTextField();
         textFieldAd.setMaximumSize(new Dimension(Integer.MAX_VALUE, textFieldAd.getMinimumSize().height));
@@ -136,34 +126,22 @@ public class UI extends Person implements ActionListener {
         buttonTemizle.setBounds(930, 690, 80, 30);
         buttonTemizle.addActionListener(this);
 
-        buttonKisiSil = new JButton("Kişi Sil");
-        buttonKisiSil.setBounds(700,690,80,30);
-        buttonKisiSil.addActionListener(this);
 
-        save = new JButton("Save (.png)");
-        save.setBounds(800, 690, 100, 30);
+        save = new JButton("Kaydet (.png)");
+        save.setBounds(800, 690, 120, 30);
         save.addActionListener(this);
 
-        //root = new DefaultMutableTreeNode("Root");
-        //jTree = new JTree();
-        //jTree.setBounds(50, 50, 1000, 600);
-
-
         grandParents = new DefaultMutableTreeNode("Büyükanne - Büyükbaba");
-        //spouse = new DefaultMutableTreeNode("Eş");
         children = new DefaultMutableTreeNode("Çocuklar");
         broSis = new DefaultMutableTreeNode("Kardeşler");
 
+        anneKardesleri = new DefaultMutableTreeNode("Kardeşleri");
+        babaKardesleri = new DefaultMutableTreeNode("Kardeşleri");
 
-        //parents.add(grandParents);
-//        root.add(spouse);
-//        root.add(broSis);
-//        root.add(children);
 
         frame = new JFrame("BloodLines");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
-        //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setBounds(0,0,screenSize.width, screenSize.height);
         frame.setVisible(true);
@@ -190,8 +168,7 @@ public class UI extends Person implements ActionListener {
 
         firstPanel.add(buttonTemizle);
         firstPanel.add(save);
-        firstPanel.add(buttonKisiSil);
-        //firstPanel.add(jTree);
+        firstPanel.add(labelHelp);
         firstControlPanel.setBounds(50, 50, 1000, 600);
 
 
@@ -207,36 +184,28 @@ public class UI extends Person implements ActionListener {
         frame.add(secondPanel);
         frame.add(thirdPanel);
 
-
-
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws URISyntaxException {
         UI ui = new UI();
 
     }
 
     int personCounter = 0;
     int relationID = 0;
-//    int id;
-    //Relation parents;
-
-    //ArrayList<Person> persons = new ArrayList<Person>();
     String tempName;
     String tempSurname;
     String tempDogum;
     Date tempDateDogum;
     Boolean tempGender;
-    //Person person;
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 0)) {
             tempName = textFieldAd.getText();
             tempSurname = textFieldSoyad.getText();
             tempDogum = textFieldDogumTarihi.getText();
-            //tempGender = comboBoxCinsiyet.getSelectedItem().toString();
             try {
                 tempDateDogum = stringToDate(tempDogum);
             } catch (ParseException ex) {
@@ -253,38 +222,18 @@ public class UI extends Person implements ActionListener {
             jTree.setBounds(50, 50, 1000, 600);
             firstControlPanel.add(jTree);
             firstPanel.add(firstControlPanel);
-
             Relation tempRelation = new Relation();
-
-
-            //DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(textFieldAd.getText() + " " + textFieldSoyad.getText());
-            // root = new DefaultMutableTreeNode(tempNode);
-
-            // Changing the text of the root value
-            //DefaultTreeModel model = (DefaultTreeModel) jTree.getModel();
-            //root = (DefaultMutableTreeNode) model.getRoot();
-            //root.setUserObject(textFieldAd.getText() + " " + textFieldSoyad.getText() + "(Kendisi)");
-           // model.nodeChanged(root);
-
             personAdder(tempRelation,tempName,tempSurname,tempDateDogum,tempGender);
             SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
             viewPersonInfo();
-
             personCounter++;
-            //tempRelation.id++;
             tempRelation.id = personCounter;
-
-            System.out.println(tempRelation.id);
-            System.out.println(tempRelation.relCounter);
-            System.out.println("------------");
-
         }
 
         if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 1)) {
             tempName = textFieldAd.getText();
             tempSurname = textFieldSoyad.getText();
             tempDogum = textFieldDogumTarihi.getText();
-            //tempGender = comboBoxCinsiyet.getSelectedItem().toString();
             try {
                 tempDateDogum = stringToDate(tempDogum);
             } catch (ParseException ex) {
@@ -301,15 +250,9 @@ public class UI extends Person implements ActionListener {
             }
             parents1 = new DefaultMutableTreeNode(tempName + " " + tempSurname +" (Anne)");
             root.add(parents1);
-
             Relation tempRelation = new Relation();
-
-            //DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Annesi)");
-
-            //parents.add(tempNode);
             personAdder(tempRelation,tempName,tempSurname,tempDateDogum,false);
             SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
-
             tempRelation.relationAdder(persons.get(0),persons.get(personCounter));
             motherFather(tempRelation,persons.get(0).id,tempRelation.spouse2);
             viewPersonInfo();
@@ -317,13 +260,7 @@ public class UI extends Person implements ActionListener {
 
             personCounter++;
             tempRelation.relCounter++;
-
             tempRelation.id = personCounter;
-
-            System.out.println(personCounter);
-            System.out.println(tempRelation.id);
-            System.out.println(tempRelation.relCounter);
-            System.out.println("------------");
 
         }
 
@@ -331,7 +268,6 @@ public class UI extends Person implements ActionListener {
             tempName = textFieldAd.getText();
             tempSurname = textFieldSoyad.getText();
             tempDogum = textFieldDogumTarihi.getText();
-            //tempGender = comboBoxCinsiyet.getSelectedItem().toString();
             try {
                 tempDateDogum = stringToDate(tempDogum);
             } catch (ParseException ex) {
@@ -351,10 +287,6 @@ public class UI extends Person implements ActionListener {
             parents2 = new DefaultMutableTreeNode(tempName + " " + tempSurname +" (Baba)");
             root.add(parents2);
 
-//            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(
-//                    textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Babası)");
-//            parents.add(tempNode);
-
             personAdder(tempRelation,tempName,tempSurname,tempDateDogum,true);
             SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
 
@@ -367,18 +299,12 @@ public class UI extends Person implements ActionListener {
             tempRelation.relCounter++;
             tempRelation.id = personCounter;
 
-            //System.out.println(personCounter);
-            System.out.println(tempRelation.id);
-            System.out.println(tempRelation.relCounter);
-            System.out.println("------------");
-
         }
 
-        if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 3)) { //DAHA YAPILMADI
+        if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 3)) {
             tempName = textFieldAd.getText();
             tempSurname = textFieldSoyad.getText();
             tempDogum = textFieldDogumTarihi.getText();
-            //tempGender = comboBoxCinsiyet.getSelectedItem().toString();
             try {
                 tempDateDogum = stringToDate(tempDogum);
             } catch (ParseException ex) {
@@ -396,10 +322,19 @@ public class UI extends Person implements ActionListener {
             broSis = new DefaultMutableTreeNode(tempName + " " + tempSurname + " (Kardeş)");
             root.add(broSis);
 
-//            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(
-//                    textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Kardeşi)");
-//            broSis.add(tempNode);
+            Relation tempRelation = new Relation();
+            personAdder(tempRelation,tempName,tempSurname,tempDateDogum,tempGender);
             SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
+
+            tempRelation.relationAdder(persons.get(0),persons.get(personCounter));
+            brotherAdder(tempRelation,tempRelation.relCounter,personCounter);
+            viewPersonInfo();
+            System.out.println(tempRelation.relations.get(tempRelation.relCounter));
+            System.out.println(tempRelation.relations.get(tempRelation.relCounter).partner);
+
+            personCounter++;
+            tempRelation.relCounter++;
+            tempRelation.id = personCounter;
 
         }
 
@@ -407,7 +342,6 @@ public class UI extends Person implements ActionListener {
             tempName = textFieldAd.getText();
             tempSurname = textFieldSoyad.getText();
             tempDogum = textFieldDogumTarihi.getText();
-            //tempGender = comboBoxCinsiyet.getSelectedItem().toString();
             try {
                 tempDateDogum = stringToDate(tempDogum);
             } catch (ParseException ex) {
@@ -426,9 +360,6 @@ public class UI extends Person implements ActionListener {
             root.add(spouse);
 
             Relation tempRelation = new Relation();
-//            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(
-//                    textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Eş)");
-//            spouse.add(tempNode);
 
             personAdder(tempRelation,tempName,tempSurname,tempDateDogum,tempGender);
             SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
@@ -443,17 +374,12 @@ public class UI extends Person implements ActionListener {
             tempRelation.relCounter++;
             tempRelation.id = personCounter;
 
-            System.out.println(tempRelation.id);
-            System.out.println(tempRelation.relCounter);
-            System.out.println("------------");
-
         }
 
         if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 5)) {
             tempName = textFieldAd.getText();
             tempSurname = textFieldSoyad.getText();
             tempDogum = textFieldDogumTarihi.getText();
-            //tempGender = comboBoxCinsiyet.getSelectedItem().toString();
             try {
                 tempDateDogum = stringToDate(tempDogum);
             } catch (ParseException ex) {
@@ -474,9 +400,6 @@ public class UI extends Person implements ActionListener {
             children = new DefaultMutableTreeNode(tempName + " " + tempSurname + " (Çocuk)");
             root.add(children);
             Relation tempRelation = new Relation();
-//            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(
-//                    textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Çocuk)");
-//            children.add(tempNode);
             SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
 
             personAdder(tempRelation,tempName,tempSurname,tempDateDogum,tempGender);
@@ -490,18 +413,12 @@ public class UI extends Person implements ActionListener {
             personCounter++;
             tempRelation.relCounter++;
             tempRelation.id = personCounter;
-
-            //System.out.println(personCounter);
-            System.out.println(tempRelation.id);
-            System.out.println(tempRelation.relCounter);
-            System.out.println("------------");
         }
 
         if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 6)) {
             tempName = textFieldAd.getText();
             tempSurname = textFieldSoyad.getText();
             tempDogum = textFieldDogumTarihi.getText();
-            //tempGender = comboBoxCinsiyet.getSelectedItem().toString();
             try {
                 tempDateDogum = stringToDate(tempDogum);
             } catch (ParseException ex) {
@@ -524,10 +441,6 @@ public class UI extends Person implements ActionListener {
             grandParents = new DefaultMutableTreeNode(tempName + " " + tempSurname +" (Anneanne)");
             parents1.add(grandParents);
 
-//            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(
-//                    textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Büyükanne)");
-//            grandParents.add(tempNode);
-
             personAdder(tempRelation,tempName,tempSurname,tempDateDogum,tempGender);
             SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
             tempRelation.relationAdder(persons.get(0),persons.get(personCounter));
@@ -541,17 +454,12 @@ public class UI extends Person implements ActionListener {
             tempRelation.relCounter++;
             tempRelation.id = personCounter;
 
-            System.out.println(tempRelation.id);
-            System.out.println(tempRelation.relCounter);
-            System.out.println("------------");
-
         }
 
         if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 7)) {
             tempName = textFieldAd.getText();
             tempSurname = textFieldSoyad.getText();
             tempDogum = textFieldDogumTarihi.getText();
-            //tempGender = comboBoxCinsiyet.getSelectedItem().toString();
             try {
                 tempDateDogum = stringToDate(tempDogum);
             } catch (ParseException ex) {
@@ -573,10 +481,6 @@ public class UI extends Person implements ActionListener {
             parents1.add(grandParents);
 
             Relation tempRelation = new Relation();
-//            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(
-//                    textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Büyükbaba)");
-//            grandParents.add(tempNode);
-
             personAdder(tempRelation,tempName,tempSurname,tempDateDogum,tempGender);
             SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
             tempRelation.relationAdder(persons.get(0),persons.get(personCounter));
@@ -586,16 +490,13 @@ public class UI extends Person implements ActionListener {
 
             grandParents();
             viewPersonInfo();
-            //System.out.println(tempRelation.relations.get(tempRelation.relCounter));
+
             System.out.println(tempRelation.relations.get(tempRelation.relCounter).spouse2);
 
             personCounter++;
             tempRelation.relCounter++;
             tempRelation.id = personCounter;
 
-            System.out.println(tempRelation.id);
-            System.out.println(tempRelation.relCounter);
-            System.out.println("------------");
 
         }
 
@@ -603,7 +504,6 @@ public class UI extends Person implements ActionListener {
             tempName = textFieldAd.getText();
             tempSurname = textFieldSoyad.getText();
             tempDogum = textFieldDogumTarihi.getText();
-            //tempGender = comboBoxCinsiyet.getSelectedItem().toString();
             try {
                 tempDateDogum = stringToDate(tempDogum);
             } catch (ParseException ex) {
@@ -625,20 +525,15 @@ public class UI extends Person implements ActionListener {
             parents2.add(grandParents);
 
             Relation tempRelation = new Relation();
-//            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(
-//                    textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Büyükbaba)");
-//            grandParents.add(tempNode);
 
             personAdder(tempRelation,tempName,tempSurname,tempDateDogum,tempGender);
             SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
             tempRelation.relationAdder(persons.get(0),persons.get(personCounter));
-            //tempRelation.relCounter++;
             tempRelation.relCounter++;
-            tempRelation.relationAdder(persons.get(personCounter-1),persons.get(personCounter)); // nine dede arası relation
+            tempRelation.relationAdder(persons.get(personCounter-1),persons.get(personCounter));
 
             grandParents();
             viewPersonInfo();
-            //System.out.println(tempRelation.relations.get(tempRelation.relCounter));
             System.out.println(tempRelation.relations.get(tempRelation.relCounter).spouse2);
 
             personCounter++;
@@ -655,7 +550,6 @@ public class UI extends Person implements ActionListener {
             tempName = textFieldAd.getText();
             tempSurname = textFieldSoyad.getText();
             tempDogum = textFieldDogumTarihi.getText();
-            //tempGender = comboBoxCinsiyet.getSelectedItem().toString();
             try {
                 tempDateDogum = stringToDate(tempDogum);
             } catch (ParseException ex) {
@@ -677,29 +571,20 @@ public class UI extends Person implements ActionListener {
             parents2.add(grandParents);
 
             Relation tempRelation = new Relation();
-//            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(
-//                    textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Büyükbaba)");
-//            grandParents.add(tempNode);
 
             personAdder(tempRelation,tempName,tempSurname,tempDateDogum,tempGender);
             SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
             tempRelation.relationAdder(persons.get(0),persons.get(personCounter));
-            //tempRelation.relCounter++;
             tempRelation.relCounter++;
             tempRelation.relationAdder(persons.get(personCounter-1),persons.get(personCounter)); // nine dede arası relation
 
             grandParents();
             viewPersonInfo();
-            //System.out.println(tempRelation.relations.get(tempRelation.relCounter));
             System.out.println(tempRelation.relations.get(tempRelation.relCounter).spouse2);
 
             personCounter++;
             tempRelation.relCounter++;
             tempRelation.id = personCounter;
-
-            System.out.println(tempRelation.id);
-            System.out.println(tempRelation.relCounter);
-            System.out.println("------------");
 
         }
 
@@ -707,7 +592,6 @@ public class UI extends Person implements ActionListener {
             tempName = textFieldAd.getText();
             tempSurname = textFieldSoyad.getText();
             tempDogum = textFieldDogumTarihi.getText();
-            //tempGender = comboBoxCinsiyet.getSelectedItem().toString();
             try {
                 tempDateDogum = stringToDate(tempDogum);
             } catch (ParseException ex) {
@@ -731,15 +615,11 @@ public class UI extends Person implements ActionListener {
             grandParents2 = new DefaultMutableTreeNode(tempName + " " + tempSurname +" (Kayınvalide)");
             spouse.add(grandParents2);
 
-//            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(
-//                    textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Büyükanne)");
-//            grandParents.add(tempNode);
-
             personAdder(tempRelation,tempName,tempSurname,tempDateDogum,tempGender);
             SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
             tempRelation.relationAdder(persons.get(0),persons.get(personCounter));
 
-            grandParents();
+            kayinPederValide(tempRelation, tempRelation.relCounter,personCounter);
             viewPersonInfo();
             System.out.println(tempRelation.relations.get(tempRelation.relCounter));
             System.out.println(tempRelation.relations.get(tempRelation.relCounter).spouse2);
@@ -749,17 +629,12 @@ public class UI extends Person implements ActionListener {
             tempRelation.relCounter++;
             tempRelation.id = personCounter;
 
-            System.out.println(tempRelation.id);
-            System.out.println(tempRelation.relCounter);
-            System.out.println("------------");
-
         }
 
         if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 11)) {
             tempName = textFieldAd.getText();
             tempSurname = textFieldSoyad.getText();
             tempDogum = textFieldDogumTarihi.getText();
-            //tempGender = comboBoxCinsiyet.getSelectedItem().toString();
             try {
                 tempDateDogum = stringToDate(tempDogum);
             } catch (ParseException ex) {
@@ -782,15 +657,102 @@ public class UI extends Person implements ActionListener {
             grandParents2 = new DefaultMutableTreeNode(tempName + " " + tempSurname +" (Kayınpeder)");
             spouse.add(grandParents2);
 
-//            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(
-//                    textFieldAd.getText() + " " + textFieldSoyad.getText() + " (Büyükanne)");
-//            grandParents.add(tempNode);
+            personAdder(tempRelation,tempName,tempSurname,tempDateDogum,tempGender);
+            SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
+            tempRelation.relationAdder(persons.get(0),persons.get(personCounter));
+
+            kayinPederValide(tempRelation, tempRelation.relCounter,personCounter);
+            viewPersonInfo();
+            System.out.println(tempRelation.relations.get(tempRelation.relCounter));
+            System.out.println(tempRelation.relations.get(tempRelation.relCounter).spouse2);
+
+            personCounter++;
+            tempRelation.relCounter++;
+            tempRelation.id = personCounter;
+
+        }
+
+        if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 12)) {
+            tempName = textFieldAd.getText();
+            tempSurname = textFieldSoyad.getText();
+            tempDogum = textFieldDogumTarihi.getText();
+            try {
+                tempDateDogum = stringToDate(tempDogum);
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
+            if(comboBoxCinsiyet.getSelectedIndex() == 0){
+                tempGender = false;
+            }
+            if(comboBoxCinsiyet.getSelectedIndex() == 1){
+                tempGender = true;
+            }
+            Relation tempRelation = new Relation();
+            if(root == null){
+                JOptionPane.showMessageDialog(null, "Lütfen ilk önce kendinizi ekleyiniz!");
+            }
+            if(parents1 == null){
+                JOptionPane.showMessageDialog(null, "Lütfen ilk önce annenizi ekleyiniz!");
+            }
+
+            anneKardesleri = new DefaultMutableTreeNode("Kardeşi");
+            parents1.add(anneKardesleri);
+
+            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(tempName + " " + tempSurname +" (Teyze)");
+            anneKardesleri.add(tempNode);
+
+            personAdder(tempRelation,tempName,tempSurname,tempDateDogum,tempGender);
+            SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
+            tempRelation.relationAdder(persons.get(0),persons.get(personCounter));
+            dayiTeyze(tempRelation, tempRelation.relCounter,tempRelation.children.get(personCounter).id);
+            viewPersonInfo();
+            System.out.println(tempRelation.relations.get(tempRelation.relCounter));
+            System.out.println(tempRelation.relations.get(tempRelation.relCounter).spouse2);
+
+            personCounter++;
+            tempRelation.relCounter++;
+            tempRelation.id = personCounter;
+
+            System.out.println(tempRelation.id);
+            System.out.println(tempRelation.relCounter);
+            System.out.println("------------");
+        }
+
+        if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 13)) {
+            tempName = textFieldAd.getText();
+            tempSurname = textFieldSoyad.getText();
+            tempDogum = textFieldDogumTarihi.getText();
+
+            try {
+                tempDateDogum = stringToDate(tempDogum);
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
+            if(comboBoxCinsiyet.getSelectedIndex() == 0){
+                tempGender = false;
+            }
+            if(comboBoxCinsiyet.getSelectedIndex() == 1){
+                tempGender = true;
+            }
+            Relation tempRelation = new Relation();
+            if(root == null){
+                JOptionPane.showMessageDialog(null, "Lütfen ilk önce kendinizi ekleyiniz!");
+            }
+            if(parents1 == null){
+                JOptionPane.showMessageDialog(null, "Lütfen ilk önce annenizi ekleyiniz!");
+            }
+
+            anneKardesleri = new DefaultMutableTreeNode("Kardeşi");
+            parents1.add(anneKardesleri);
+
+            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(tempName + " " + tempSurname +" (Dayı)");
+            anneKardesleri.add(tempNode);
 
             personAdder(tempRelation,tempName,tempSurname,tempDateDogum,tempGender);
             SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
             tempRelation.relationAdder(persons.get(0),persons.get(personCounter));
 
-            grandParents();
+            kayinPederValide(tempRelation, tempRelation.relCounter,personCounter);
             viewPersonInfo();
             System.out.println(tempRelation.relations.get(tempRelation.relCounter));
             System.out.println(tempRelation.relations.get(tempRelation.relCounter).spouse2);
@@ -800,9 +762,95 @@ public class UI extends Person implements ActionListener {
             tempRelation.relCounter++;
             tempRelation.id = personCounter;
 
-            System.out.println(tempRelation.id);
-            System.out.println(tempRelation.relCounter);
-            System.out.println("------------");
+        }
+        if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 14)) {
+            tempName = textFieldAd.getText();
+            tempSurname = textFieldSoyad.getText();
+            tempDogum = textFieldDogumTarihi.getText();
+
+            try {
+                tempDateDogum = stringToDate(tempDogum);
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
+            if(comboBoxCinsiyet.getSelectedIndex() == 0){
+                tempGender = false;
+            }
+            if(comboBoxCinsiyet.getSelectedIndex() == 1){
+                tempGender = true;
+            }
+            Relation tempRelation = new Relation();
+            if(root == null){
+                JOptionPane.showMessageDialog(null, "Lütfen ilk önce kendinizi ekleyiniz!");
+            }
+            if(parents2 == null){
+                JOptionPane.showMessageDialog(null, "Lütfen ilk önce babanızı ekleyiniz!");
+            }
+
+            babaKardesleri = new DefaultMutableTreeNode("Kardeşi");
+            parents2.add(babaKardesleri);
+
+            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(tempName + " " + tempSurname +" (Hala)");
+            babaKardesleri.add(tempNode);
+
+            personAdder(tempRelation,tempName,tempSurname,tempDateDogum,tempGender);
+            SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
+            tempRelation.relationAdder(persons.get(0),persons.get(personCounter));
+
+            amcaHala(tempRelation, tempRelation.relCounter,tempRelation.children.get(personCounter).id);
+            viewPersonInfo();
+            System.out.println(tempRelation.relations.get(tempRelation.relCounter));
+            System.out.println(tempRelation.relations.get(tempRelation.relCounter).spouse2);
+
+
+            personCounter++;
+            tempRelation.relCounter++;
+            tempRelation.id = personCounter;
+
+        }
+        if (e.getSource() == buttonEkle && (comboBoxAkraba.getSelectedIndex() == 15)) {
+            tempName = textFieldAd.getText();
+            tempSurname = textFieldSoyad.getText();
+            tempDogum = textFieldDogumTarihi.getText();
+            try {
+                tempDateDogum = stringToDate(tempDogum);
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
+            if(comboBoxCinsiyet.getSelectedIndex() == 0){
+                tempGender = false;
+            }
+            if(comboBoxCinsiyet.getSelectedIndex() == 1){
+                tempGender = true;
+            }
+            Relation tempRelation = new Relation();
+            if(root == null){
+                JOptionPane.showMessageDialog(null, "Lütfen ilk önce kendinizi ekleyiniz!");
+            }
+            if(parents2 == null){
+                JOptionPane.showMessageDialog(null, "Lütfen ilk önce babanızı ekleyiniz!");
+            }
+
+            babaKardesleri = new DefaultMutableTreeNode("Kardeşi");
+            parents2.add(babaKardesleri);
+
+            DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(tempName + " " + tempSurname +" (Amca)");
+            babaKardesleri.add(tempNode);
+
+            personAdder(tempRelation,tempName,tempSurname,tempDateDogum,tempGender);
+            SwingUtilities.updateComponentTreeUI(firstPanel); // reload the firstPanel after every person add
+            tempRelation.relationAdder(persons.get(0),persons.get(personCounter));
+
+            amcaHala(tempRelation, tempRelation.relCounter,tempRelation.children.get(personCounter).id);
+            viewPersonInfo();
+            System.out.println(tempRelation.relations.get(tempRelation.relCounter));
+            System.out.println(tempRelation.relations.get(tempRelation.relCounter).spouse2);
+
+
+            personCounter++;
+            tempRelation.relCounter++;
+            tempRelation.id = personCounter;
+
         }
 
         if (e.getSource() == comboBoxCinsiyet) {
@@ -822,9 +870,6 @@ public class UI extends Person implements ActionListener {
             }
         }
 
-        if(e.getSource() == buttonKisiSil){
-            
-        }
     }
 
     public static Date stringToDate(String sDate1) throws ParseException {
@@ -849,6 +894,7 @@ public class UI extends Person implements ActionListener {
         BufferedImage image = robot.createScreenCapture(screenRectangle);
         ImageIO.write(image, "png", new File(fileName));
     }
+
 }
 
 class Person {
@@ -869,9 +915,8 @@ class Person {
         gender = null;
     }
 
-    public void personAdder(Relation relation,String name, String surname, Date birthday, Boolean gender){
+    public void personAdder(Relation relation,String name, String surname, Date birthday, Boolean gender) {
         persons.add(new Person(relation,name,surname,birthday,gender));
-        //viewPersonInfo();
     }
 
     public void childrenAdder(Relation relation, int relationID, int personID) {
@@ -879,23 +924,23 @@ class Person {
         persons.get(personID).parents = relation.relations.get(relationID);
     }
 
-//    public void brotherAdder(Relation relation, int relationID, int relationdakiSpouseID) {//spouse idye bastiriyo bunu bir daha islememiz gerekebilir.
-//        try {
-//            relation.brother.add(relation.relations.get(relationID).spouse1);
-//            relation.brother.add(relation.relations.get(relationID).spouse2);
-//            if (relation.relations.get(relationID).spouse1.birthday.after(relation.relations.get(relationID).spouse2.birthday)) {
-//                if (relation.relations.get(relationID).spouse2.gender) {
-//                    System.out.println("Abi adı: " + relation.brother.get(relationdakiSpouseID).name);
-//                } else {
-//                    System.out.println("Abla adı: " + relation.brother.get(relationdakiSpouseID).name);
-//                }
-//            } else {
-//                System.out.println("Kardeş adı: " + relation.brother.get(relationdakiSpouseID).name);
-//            }
-//        } catch (NullPointerException e) {
-//            e.getMessage();
-//        }
-//    }
+    public void brotherAdder(Relation relation, int relationID, int relationdakiSpouseID) {//spouse idye bastiriyo bunu bir daha islememiz gerekebilir.
+        try {
+            relation.brother.add(relation.relations.get(relationID).spouse1);
+            relation.brother.add(relation.relations.get(relationID).spouse2);
+            if (relation.relations.get(relationID).spouse1.birthday.after(relation.relations.get(relationID).spouse2.birthday)) {
+                if (relation.relations.get(relationID).spouse2.gender) {
+                    System.out.println("Abi adı: " + relation.brother.get(relationdakiSpouseID).name);
+                } else {
+                    System.out.println("Abla adı: " + relation.brother.get(relationdakiSpouseID).name);
+                }
+            } else {
+                System.out.println("Kardeş adı: " + relation.brother.get(relationdakiSpouseID).name);
+            }
+        } catch (NullPointerException e) {
+            e.getMessage();
+        }
+    }
 
     public void motherFather(Relation relation,int childRel,Person person) {
 
@@ -936,7 +981,7 @@ class Person {
         }
     }
 
-    public void amcaHala(Relation relation, int relationID, int personID, int childrenID) {
+    public void amcaHala(Relation relation, int relationID, int childrenID) {
         try {
             if (relation.relations.get(relationID).children.get(childrenID).gender) {
                 System.out.println("Amca: " + relation.relations.get(relationID).children.get(childrenID).name);
@@ -948,7 +993,7 @@ class Person {
         }
     }
 
-    public void dayiTeyze(Relation relation, int relationID, int personID, int childrenID) {
+    public void dayiTeyze(Relation relation, int relationID, int childrenID) {
         try {
             if (relation.relations.get(relationID).children.get(childrenID).gender) {
                 System.out.println("Dayı: " + relation.relations.get(relationID).children.get(childrenID).name);
@@ -1023,23 +1068,6 @@ class Person {
         }
     }
 
-//    public void showPersons(Person person){
-//        for (int i=0; i<persons.size();i++){
-//            person.viewPersonInfo();
-//        }
-//    }
-
-//    public void viewPersonInfo(){
-//        System.out.println("Adı: "+name);
-//        System.out.println("Soyadı: "+surname);
-//        System.out.println("Doğum Tarihi: "+birthday);
-//        System.out.println("Cinsiyeti: "+gender);
-//        motherFather();
-//        grandParents();
-//
-//        System.out.println();
-//
-//    }
 
     public Person(Relation parents, String name, String surname, Date birthday, Boolean gender){
         this.parents = parents;
