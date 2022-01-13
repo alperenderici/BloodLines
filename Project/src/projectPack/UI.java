@@ -35,6 +35,7 @@ public class UI extends Person implements ActionListener {
     Border margin = new EmptyBorder(10, 10, 10, 10);//
     JButton buttonEkle;
     JButton buttonTemizle;
+    JButton buttonKisiSil;
     JButton save;
     JLabel labelAd;
     JLabel labelSoyAd;
@@ -135,8 +136,12 @@ public class UI extends Person implements ActionListener {
         buttonTemizle.setBounds(930, 690, 80, 30);
         buttonTemizle.addActionListener(this);
 
+        buttonKisiSil = new JButton("Kişi Sil");
+        buttonKisiSil.setBounds(700,690,80,30);
+        buttonKisiSil.addActionListener(this);
+
         save = new JButton("Save (.png)");
-        save.setBounds(800, 690, 120, 30);
+        save.setBounds(800, 690, 100, 30);
         save.addActionListener(this);
 
         //root = new DefaultMutableTreeNode("Root");
@@ -185,6 +190,7 @@ public class UI extends Person implements ActionListener {
 
         firstPanel.add(buttonTemizle);
         firstPanel.add(save);
+        firstPanel.add(buttonKisiSil);
         //firstPanel.add(jTree);
         firstControlPanel.setBounds(50, 50, 1000, 600);
 
@@ -814,6 +820,10 @@ public class UI extends Person implements ActionListener {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+        }
+
+        if(e.getSource() == buttonKisiSil){
+            
         }
     }
 
