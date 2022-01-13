@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 public class UI extends Person implements ActionListener {
     JFrame frame;
     JPanel firstPanel;
@@ -59,12 +62,12 @@ public class UI extends Person implements ActionListener {
 
     public UI() {
         firstPanel = new JPanel();
-        firstPanel.setBorder(border);
+        //firstPanel.setBorder(border);
         firstPanel.setBounds(0, 0, 1100, 800);
         firstPanel.setLayout(null);
 
         secondPanel = new JPanel();
-        secondPanel.setBorder(border);
+        //secondPanel.setBorder(border);
         secondPanel.setBounds(1100, 0, 430, 400);
         secondPanel.setLayout(new BoxLayout(secondPanel, BoxLayout.LINE_AXIS));
         // secondPanel.setLayout(new GridLayout());
@@ -73,7 +76,7 @@ public class UI extends Person implements ActionListener {
         secondControlPanel.setLayout(new GridLayout());
 
         thirdPanel = new JPanel();
-        thirdPanel.setBorder(border);
+        //thirdPanel.setBorder(border);
         thirdPanel.setBounds(1100, 400, 430, 400);
         thirdPanel.setLayout(new BoxLayout(thirdPanel, BoxLayout.PAGE_AXIS));
 
@@ -121,7 +124,7 @@ public class UI extends Person implements ActionListener {
         comboBoxAkraba.addActionListener(this);
 
         buttonEkle = new JButton("Ekle");
-        buttonEkle.setBounds(secondPanel.getX() + 50, secondPanel.getY() + 50, 30, 10);
+        buttonEkle.setBounds(secondPanel.getX() + 50, secondPanel.getY() + 70, 30, 10);
         buttonEkle.addActionListener(this);
 
         buttonTemizle = new JButton("Temizle");
@@ -151,10 +154,12 @@ public class UI extends Person implements ActionListener {
         frame = new JFrame("BloodLines");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setBounds(0,0,screenSize.width, screenSize.height);
         frame.setVisible(true);
 
-        textfieldsPanel.add(Box.createRigidArea(new Dimension(0, 15))); // margin
+        textfieldsPanel.add(Box.createRigidArea(new Dimension(0, 50))); // margin
         textfieldsPanel.add(textFieldAd);
         textfieldsPanel.add(Box.createRigidArea(new Dimension(0, 15)));
         textfieldsPanel.add(textFieldSoyad);
@@ -164,7 +169,7 @@ public class UI extends Person implements ActionListener {
         textfieldsPanel.add(comboBoxCinsiyet);
         textfieldsPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
-        labelsPanel.add(Box.createRigidArea(new Dimension(0, 15))); // margin
+        labelsPanel.add(Box.createRigidArea(new Dimension(0, 50))); // margin
         labelsPanel.add(labelAd);
         labelsPanel.add(Box.createRigidArea(new Dimension(0, 18)));
         labelsPanel.add(labelSoyAd);
@@ -194,6 +199,7 @@ public class UI extends Person implements ActionListener {
 
     public static void main(String[] args) {
         UI ui = new UI();
+
     }
 
     int personCounter = 0;
@@ -639,16 +645,8 @@ public class UI extends Person implements ActionListener {
         System.out.println();
     }
 
-    public static void printScreen(JTree jtree) throws AWTException {
-        BufferedImage bufImage = new BufferedImage(jtree.getSize().width, jtree.getSize().height,BufferedImage.TYPE_INT_RGB);
-        jtree.paint(bufImage.createGraphics());
-        File imageFile = new File("C:\\Users\\Gizem\\IdeaProjects\\untitled4\\out");
-        try{
-            imageFile.createNewFile();
-            ImageIO.write(bufImage, "jpeg", imageFile);
-        }catch(Exception ex){
-        }
-    }
+
+
 
     public static void captureScreen(String fileName, JTree jtree) throws Exception {
         Dimension screenSize = jtree.getSize();
